@@ -7,23 +7,69 @@ from eralchemy2 import render_er
 
 Base = declarative_base()
 
-class Person(Base):
-    __tablename__ = 'person'
-    # Here we define columns for the table person
-    # Notice that each column is also a normal Python instance attribute.
+class User(Base):
+    __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
+    email = Column(String(250), nullable=False)
 
-class Address(Base):
-    __tablename__ = 'address'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
+    def to_dict(self):
+        return {}
+
+class UserFollowers(Base):
+    __tablename__ = "user_followers"
     id = Column(Integer, primary_key=True)
-    street_name = Column(String(250))
-    street_number = Column(String(250))
-    post_code = Column(String(250), nullable=False)
-    person_id = Column(Integer, ForeignKey('person.id'))
-    person = relationship(Person)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    follower_id = Column(Integer, ForeignKey('user.id'))
+    created_at = Column(String(250), nullable=False)
+    updated_at = Column(String(250), nullable=False)
+
+    def to_dict(self):
+        return {}
+
+class Post(Base):
+    __tablename__ = 'post'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    type = Column(String(250), nullable=False)
+    created_at = Column(String(250), nullable=False)
+    updated_at = Column(String(250), nullable=False)
+    total_likes = Column(Integer, nullable=False)
+    total_comments = Column(Integer, nullable=False)
+
+    def to_dict(self):
+        return {}
+
+class PostLikes(Base):
+    __tablename__ = "post_likes"
+    id = Column(Integer, primary_key=True)
+    post_id = Column(Integer, ForeignKey('post.id'))
+    user_id = Column(Integer, ForeignKey('user.id'))
+    created_at = Column(String(250), nullable=False)
+    updated_at = Column(String(250), nullable=False)
+
+    def to_dict(self):
+        return {}
+
+class PostComments(Base):
+    __tablename__ = "post_comments"
+    id = Column(Integer, primary_key=True)
+    post_id = Column(Integer, ForeignKey('post.id'))
+    user_id = Column(Integer, ForeignKey('user.id'))
+    comment = Column(String, nullable=False)
+    created_at = Column(String(250), nullable=False)
+    updated_at = Column(String(250), nullable=False)
+
+    def to_dict(self):
+        return {}
+
+class UserFeeds(Base):
+    __tablename__ = "user_feeds"
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    post_id = Column(Integer, ForeignKey('post.id'))
+    created_at = Column(String(250), nullable=False)
+    updated_at = Column(String(250), nullable=False)
 
     def to_dict(self):
         return {}
